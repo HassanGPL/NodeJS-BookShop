@@ -4,16 +4,16 @@ This is my first backend project with nodeJS and the starting point of working i
 I will add everything I learn in this project.
 
 ## Languages
-JavaScript
-HTML -- (PUG)
-CSS
+* JavaScript
+* HTML -- (PUG)
+* CSS
 
 ## Technologies and Modules
-NodeJS
-ExpressJS
+* NodeJS
+* ExpressJS
 
 ## Tools
-Visual Studio Code
+* Visual Studio Code
 
 
 ### Special thanks to Maximilian Schwarzmuller
