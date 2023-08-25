@@ -6,7 +6,7 @@ I will add everything I learn in this project.
 
 ## Languages
 * JavaScript
-* HTML -- (PUG)
+* HTML - ejs
 * CSS
 
 ## Technologies and Modules
