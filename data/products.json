@@ -1,14 +1,1 @@
-[
-    {
-        "title": "Book 1"
-    },
-    {
-        "title": "Book 2"
-    },
-    {
-        "title": "Book 3"
-    },
-    {
-        "title": "Book 4"
-    }
-]
+[{"title":"My Book","imageUrl":"D:\\photos\\ID1.jpg","description":"This is my book ...","price":"19"},{"title":"My Book 2","imageUrl":"D:\\photos\\ID1.jpg","description":"","price":"19.99"}]
