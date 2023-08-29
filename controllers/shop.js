@@ -6,6 +6,13 @@ exports.getProducts = (req, res, next) => {
     });
 }
 
+exports.getProduct = (req, res, next) => {
+    const productID = req.params.productID;
+    Product.findProductByID(productID, product => {
+        res.render('shop/product-details', { product: product, Title: product.title, path: '' });
+    });
+}
+
 exports.getcart = (req, res, next) => {
     res.render('shop/cart', { Title: "Cart", path: '/cart' });
 }
