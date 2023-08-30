@@ -26,10 +26,13 @@
                                     </p>
                                 </div>
                                 <div class="card__actions">
-                                    <button class="btn">Add to Cart</button>
+                                    <form action="/cart" method="post">
+                                        <button type="submit" class="btn"> Add to Cart </button>
+                                        <input type="hidden" name="productID" value="<%= product.id %>">
+                                    </form>
                                 </div>
                             </article>
-                            <% } %>
+                        <% } %>
                     </div>
                     <% } else { %>
                         <h1>No Products Found!</h1>

@@ -43,7 +43,6 @@ form {
 
 .main-header__item {
   margin: 0 1rem;
-  padding: 0;
 }
 
 .main-header__item a {
@@ -51,12 +50,19 @@ form {
   color: white;
 }
 
-.main-header__item a:hover,
+/* .main-header__item a:hover,
 .main-header__item a:active,
 .main-header__item a.active {
   color: #00695c;
   background: white;
-  border-radius: 3px;
+} */
+
+/* .main-header__item a:active, */
+.main-header__item a.active {
+  color: #00695c;
+  background: white;
+  border-radius: 25px;
+  padding: 5px;
 }
 
 
