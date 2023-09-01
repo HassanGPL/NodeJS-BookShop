@@ -1,25 +1,26 @@
 const fs = require('fs');
 const path = require('path');
 
+// Get file path of cart.json
 const filePath = path.join(path.dirname(process.mainModule.filename), 'data', 'cart.json');
 
 module.exports = class Cart {
 
     static addProduct(id, price) {
 
-        // 1 - Fetch the previous cart
+        // Fetch the previous cart
         fs.readFile(filePath, (err, fileContent) => {
             let cart = { products: [], totalPrice: 0 };
             if (!err) {
                 cart = JSON.parse(fileContent);
             }
 
-            // 2 - Analyze the cart : Find existing Product
+            // Analyze the cart : Find existing Product
             const existingProductIndex = cart.products.findIndex(prod => prod.id === id);
             const existingProduct = cart.products[existingProductIndex];
             let updatedProduct;
 
-            // 3 - Add new product or increase quantity
+            // Add new product or increase quantity
             if (existingProduct) {
                 updatedProduct = { ...existingProduct };
                 updatedProduct.quantity += 1;
@@ -31,7 +32,7 @@ module.exports = class Cart {
             }
             cart.totalPrice = cart.totalPrice + +price;
 
-            // 4 - Write new data in cart JSON file
+            // Write new data in cart JSON file
             fs.writeFile(filePath, JSON.stringify(cart), (err) => {
                 console.log(err);
             });
@@ -39,4 +40,32 @@ module.exports = class Cart {
         });
 
     }
+
+    static deleteProduct(id, price) {
+
+        // Fetch the previous cart
+        fs.readFile(filePath, (err, fileContent) => {
+            if (err) {
+                return;
+            }
+            const updatedCart = { ...JSON.parse(fileContent) };
+
+            // Catch the product to delete
+            const product = updatedCart.products.find(prod => prod.id === id);
+            const productQTY = product.quantity;
+
+            // Delete product from products array in the cart
+            updatedCart.products = updatedCart.products.filter(prod => prod.id !== id);
+
+            // Update total price
+            updatedCart.totalPrice = updatedCart.totalPrice - (price * productQTY);
+
+            // Write new data in cart JSON file
+            fs.writeFile(filePath, JSON.stringify(updatedCart), (err) => {
+                console.log(err);
+            });
+        });
+    }
+
+
 }

@@ -37,20 +37,29 @@ exports.getEditProduct = (req, res, next) => {
 }
 
 exports.postEditProduct = (req, res, next) => {
-    // 1 - catch data from request 
+    // catch data from request 
     const id = req.body.ID;
     const updatedTitle = req.body.title;
     const updatedImageUrl = req.body.imageUrl;
     const updatedDescription = req.body.description;
     const updatedPrice = req.body.price;
 
-    // 2 - create a new product 
+    // create a new product 
     const updatedProduct = new Product(id, updatedTitle, updatedImageUrl, updatedDescription, updatedPrice);
 
-    // 3 edit 
+    // edit 
     updatedProduct.save();
     res.redirect('/admin/products');
 }
+
+exports.postDeleteProduct = (req, res, next) => {
+    // Get product ID from view
+    const productID = req.body.productID;
+    // Delete product
+    Product.deleteProductByID(productID);
+    res.redirect('/admin/products');
+}
+
 
 
 exports.getAdminProducts = (req, res, next) => {
