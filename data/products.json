@@ -1,16 +1,1 @@
-[
-    {
-        "id": "0.45964297101157525",
-        "title": "Book 1",
-        "imageUrl": "https://cdn.pixabay.com/photo/2016/03/31/20/51/book-1296045_960_720.png",
-        "description": "Amazing Book 1",
-        "price": "10"
-    },
-    {
-        "id": "0.6558829980657448",
-        "title": "Book 2",
-        "imageUrl": "https://cdn.pixabay.com/photo/2016/03/31/20/51/book-1296045_960_720.png",
-        "description": "Amazing Book 2",
-        "price": "50"
-    }
-]
+[]

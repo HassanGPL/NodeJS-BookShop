@@ -52,6 +52,9 @@ module.exports = class Cart {
 
             // Catch the product to delete
             const product = updatedCart.products.find(prod => prod.id === id);
+            if (!product) {
+                return;
+            }
             const productQTY = product.quantity;
 
             // Delete product from products array in the cart
