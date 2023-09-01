@@ -3,4 +3,46 @@
 
     <body>
         <%- include('../includes/nav.ejs') %>
+            <main>
+                <% if (products.length> 0) { %>
+                    <div class="grid">
+                        <% for (let product of products) { %>
+                            <article class="card product-item">
+                                <header class="card__header">
+                                    <h1 class="product__title">
+                                        <%= product.cartProduct.title %>
+                                    </h1>
+                                </header>
+                                <div class="card__image">
+                                    <img src="<%= product.cartProduct.imageUrl %>"
+                                        alt="<%= product.cartProduct.title %>" height="400px" width="400px">
+                                </div>
+                                <div class="card__content">
+                                    <h2 class="product__price">
+                                        <%= product.cartProduct.price %> $
+                                    </h2>
+                                    <h4>
+                                        Pieces no. : <%= product.quantity %>
+                                    </h4>
+                                    <h4>
+                                        Total Price : <%= product.quantity * product.cartProduct.price %> $
+                                    </h4>
+                                    <p class="product__description">
+                                        <%= product.cartProduct.description %>
+                                    </p>
+                                </div>
+                                <div class="card__actions">
+                                    <form action="/cart-delete-item" method="POST">
+                                        <input type="hidden" value="<%=product.cartProduct.id%>" name="productID">
+                                        <button class="btn" type="submit">Delete</button>
+                                    </form>
+                                </div>
+                            </article>
+                            <% } %>
+                    </div>
+                    <% } else { %>
+                        <h1>No Products in Cart!</h1>
+                        <% } %>
+            </main>
+
             <%- include('../includes/end.ejs') %>
