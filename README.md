@@ -19,4 +19,4 @@ In order to run the project "npm install".
 * Visual Studio Code
 
 
-### Special thanks to Maximilian Schwarzmuller
+### Special thanks to Maximilian Schwarzmuller.
