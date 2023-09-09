@@ -4,7 +4,7 @@ This is my first backend project with nodeJS and the starting point of working i
 <br>
 I will add everything I learn in this project.
 <br>
-In order to run the project "npm install"
+In order to run the project "npm install".
 
 ## Languages
 * JavaScript
