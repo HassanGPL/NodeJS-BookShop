@@ -2,7 +2,7 @@ const path = require('path');
 const express = require('express');
 const body = require('body-parser');
 const pagenotfoundController = require('./controllers/pagenotfound');
-const dbConection = require('./helpers/databases');
+const sequelize = require('./helpers/databases');
 
 const app = express();
 
@@ -21,4 +21,11 @@ app.use(shopRoutes);
 
 app.use(pagenotfoundController.getPageNotFound);
 
-app.listen(3000);
+// sync method for add tables for our models in database
+sequelize.sync()
+    .then(result => {
+        // console.log(result);
+        app.listen(3000);
+    }).catch(err => {
+        // console.log(err);
+    });

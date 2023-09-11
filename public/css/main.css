@@ -70,6 +70,15 @@ form {
   text-align: center;
 }
 
+.image {
+  height: 20rem;
+}
+
+.image img {
+  width: 100%;
+}
+
+
 
 .mobile-nav {
   width: 30rem;

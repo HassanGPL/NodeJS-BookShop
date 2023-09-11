@@ -2,15 +2,16 @@ const Product = require('../models/product');
 const Cart = require('../models/cart');
 
 exports.getProducts = (req, res, next) => {
-    Product.fetchAll()
-        .then(([rows, fieldData]) => {
+
+    // return all products in database
+    Product.findAll()
+        .then(products => {
             res.render('shop/products-list', {
-                products: rows,
-                Title: "Products",
+                products: products,
+                Title: 'Products',
                 path: '/products'
-            })
-        }
-        ).catch(err => {
+            });
+        }).catch(err => {
             console.log(err);
         });
 
@@ -18,15 +19,19 @@ exports.getProducts = (req, res, next) => {
 
 exports.getProduct = (req, res, next) => {
     const productID = req.params.productID;
-    Product.findProductByID(productID)
-        .then(([product]) => {
+
+    // return specific product in database
+    Product.findByPk(productID)
+        .then(product => {
             res.render('shop/product-details', {
-                product: product[0],
+                product: product,
                 Title: product.title,
                 path: ''
             });
-        })
-        .catch(err => console.log(err));
+        }).catch(err => {
+            console.log(err);
+        });
+
 }
 
 exports.getCart = (req, res, next) => {
@@ -62,17 +67,17 @@ exports.postCart = (req, res, next) => {
 
 
 exports.getIndex = (req, res, next) => {
-    Product.fetchAll()
-        .then(([rows, fieldData]) => {
-            res.render('shop/index', {
-                products: rows,
-                Title: "Shop",
-                path: '/'
-            });
-        })
-        .catch(err => {
-            console.log(err);
+
+    // return all products in database
+    Product.findAll().then(products => {
+        res.render('shop/index', {
+            products: products,
+            Title: "Shop",
+            path: '/'
         });
+    }).catch(err => {
+        console.log(err);
+    });
 }
 
 exports.getCheckout = (req, res, next) => {
