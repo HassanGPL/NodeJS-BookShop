@@ -3,15 +3,17 @@ const Product = require('../models/product');
 exports.getAdminProducts = (req, res, next) => {
 
     // return all products in database
-    Product.findAll().then(products => {
-        res.render('admin/products', {
-            products: products,
-            Title: "Admin Products",
-            path: '/admin/products'
+    req.user.getProducts()
+        // Product.findAll()
+        .then(products => {
+            res.render('admin/products', {
+                products: products,
+                Title: "Admin Products",
+                path: '/admin/products'
+            });
+        }).catch(err => {
+            console.log(err);
         });
-    }).catch(err => {
-        console.log(err);
-    });
 }
 
 exports.getAddProduct = (req, res, next) => {
@@ -30,7 +32,7 @@ exports.postAddProduct = (req, res, next) => {
     const price = req.body.price;
 
     // Add a new product to database
-    Product.create({
+    req.user.createProduct({
         title: title,
         price: price,
         imageUrl: imageUrl,
@@ -53,12 +55,16 @@ exports.getEditProduct = (req, res, next) => {
     const productID = req.params.productID;
 
     // return specific product in database
-    Product.findByPk(productID)
-        .then(product => {
+    req.user.getProducts({ where: { id: productID } })
+        // Product.findByPk(productID)
+        .then(products => {
+            if (!products[0]) {
+                return res.render('/');
+            }
             res.render('admin/edit-product', {
                 Title: "Edit Product",
                 path: '/admin/edit-product',
-                product: product,
+                product: products[0],
                 edit: editMode,
             });
         }).catch(err => console.log(err));
