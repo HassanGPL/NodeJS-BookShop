@@ -8,6 +8,8 @@ const sequelize = require('./helpers/databases');
 
 const Product = require('./models/product');
 const User = require('./models/user');
+const Cart = require('./models/cart');
+const CartItem = require('./models/cart-item');
 
 
 const app = express();
@@ -42,15 +44,23 @@ app.use(shopRoutes);
 app.use(pagenotfoundController.getPageNotFound);
 
 
-// apply relationships between user and product
+// apply relationship between user and product
 Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
 User.hasMany(Product);
+
+// apply relationship between user and cart
+User.hasOne(Cart);
+Cart.belongsTo(User);
+
+// apply relationship between cart and product
+Cart.belongsToMany(Product, { through: CartItem });
+Product.belongsToMany(Cart, { through: CartItem });
 
 
 // sync method for add tables for our models in database
 sequelize
-    //.sync({ force: true })
-    .sync()
+    .sync({ force: true })
+    // .sync()
     .then(result => {
         return User.findByPk(1);
     })
