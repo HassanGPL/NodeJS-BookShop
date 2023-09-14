@@ -17,6 +17,7 @@ In order to run the project "npm install".
 
 ## Tools
 * Visual Studio Code
+* MySQL
 
 
 ### Special thanks to Maximilian Schwarzmuller.
