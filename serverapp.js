@@ -1,3 +1,5 @@
+const { Sequelize, DataTypes } = require('sequelize');
+
 const path = require('path');
 const express = require('express');
 const body = require('body-parser');
@@ -71,11 +73,18 @@ sequelize
         }
         return user;
     })
+    // .then(user => {
+    //     // create cart for user 1
+    //     Cart.destroy({
+    //         where: {
+    //             id: {
+    //                 [Sequelize.Op.gt]: 1
+    //             }
+    //         },
+    //     });
+    //     return user.createCart();
+    // })
     .then(user => {
-        // create cart for user 1
-        return user.createCart();
-    })
-    .then(cart => {
         app.listen(3000);
     })
     .catch(err => {
