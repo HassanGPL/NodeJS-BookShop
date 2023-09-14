@@ -1,5 +1,6 @@
 const Product = require('../models/product');
 const Cart = require('../models/cart');
+const Order = require('../models/order');
 
 exports.getProducts = (req, res, next) => {
 
@@ -103,6 +104,56 @@ exports.getIndex = (req, res, next) => {
 exports.getCheckout = (req, res, next) => {
     res.render('shop/checkout', { Title: "Checkout", path: '/checkout' });
 }
+
+
+exports.postOrder = (req, res, next) => {
+    let userCart;
+    req.user.getCart()
+        .then(cart => {
+            userCart = cart;
+            return cart.getProducts()
+        }).then(products => {
+            return req.user.createOrder()
+                .then(order => {
+                    return order.addProducts(
+                        products.map(product => {
+                            product.orderItem = { quantity: product.cartItem.quantity };
+                            return product;
+                        })
+                    );
+                })
+                .catch(err => console.log(err));
+        })
+        .then(() => {
+            return userCart.setProducts(null);
+        }).then(() => {
+            res.redirect('/orders');
+        })
+        .catch(err => console.log(err));
+
+
+    // req.user.getCart()
+    //     .then(cart => {
+    //         cart.getProducts()
+    //             .then(products => {
+    //                 return req.user.createOrder()
+    //                     .then(order => {
+    //                         return order.addProducts(products.map(product => {
+    //                             product.orderItem = { quantity: product.cartItem.quantity };
+    //                             return product;
+    //                         }));
+    //                     })
+    //                     .catch(err => console.log(err));
+    //             })
+    //             .catch(err => console.log(err));
+    //     })
+    //     .then(() => {
+    //         res.redirect('/orders')
+    //     })
+    //     .catch(err => console.log(err));
+
+}
+
 
 exports.getOrders = (req, res, next) => {
     res.render('shop/orders', { Title: "Orders", path: '/orders' });
