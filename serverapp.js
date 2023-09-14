@@ -59,19 +59,23 @@ Product.belongsToMany(Cart, { through: CartItem });
 
 // sync method for add tables for our models in database
 sequelize
-    .sync({ force: true })
-    // .sync()
+    // .sync({ force: true })
+    .sync()
     .then(result => {
         return User.findByPk(1);
     })
     .then(user => {
         if (!user) {
+            // create user 1
             return User.create({ name: 'Hassan', email: 'Hassan@test.com' });
         }
         return user;
     })
     .then(user => {
-        //console.log(user);
+        // create cart for user 1
+        return user.createCart();
+    })
+    .then(cart => {
         app.listen(3000);
     })
     .catch(err => {

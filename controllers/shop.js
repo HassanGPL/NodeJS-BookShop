@@ -35,26 +35,42 @@ exports.getProduct = (req, res, next) => {
 }
 
 exports.getCart = (req, res, next) => {
-    Cart.getCart(cart => {
-        Product.fetchAll()
-            .then(([rows, fieldData]) => {
-                const cartProducts = [];
-                rows.forEach(element => {
-                    const cartProduct = cart.products.find(prod => prod.id === element.id);
-                    if (cartProduct) {
-                        cartProducts.push({ cartProduct: element, quantity: cartProduct.quantity });
-                    }
-                });
-                res.render('shop/cart', {
-                    Title: "Cart",
-                    path: '/cart',
-                    products: cartProducts
-                });
-            })
-            .catch(err => {
-                console.log(err);
+
+    req.user.getCart()
+        .then(cart => {
+            return cart.getProducts();
+        })
+        .then(products => {
+            res.render('shop/cart', {
+                Title: "Cart",
+                path: '/cart',
+                products: products
             });
-    });
+        })
+        .catch(err => {
+            console.log(err);
+        });
+
+    // Cart.getCart(cart => {
+    //     Product.fetchAll()
+    //         .then(([rows, fieldData]) => {
+    //             const cartProducts = [];
+    //             rows.forEach(element => {
+    //                 const cartProduct = cart.products.find(prod => prod.id === element.id);
+    //                 if (cartProduct) {
+    //                     cartProducts.push({ cartProduct: element, quantity: cartProduct.quantity });
+    //                 }
+    //             });
+    //             res.render('shop/cart', {
+    //                 Title: "Cart",
+    //                 path: '/cart',
+    //                 products: cartProducts
+    //             });
+    //         })
+    //         .catch(err => {
+    //             console.log(err);
+    //         });
+    // });
 }
 
 exports.postCart = (req, res, next) => {
