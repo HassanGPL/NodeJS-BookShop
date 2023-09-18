@@ -5,7 +5,7 @@ const express = require('express');
 const body = require('body-parser');
 
 const pagenotfoundController = require('./controllers/pagenotfound');
-const mongoConnect = require('./helpers/databases');
+const mongoConnect = require('./helpers/databases').mongoConnect;
 
 
 const app = express();
@@ -31,6 +31,7 @@ app.use((req, res, next) => {
     //     ).catch(err => {
     //         console.log(err);
     //     });
+    next();
 });
 
 
@@ -40,6 +41,5 @@ app.use('/admin', adminRoutes);
 app.use(pagenotfoundController.getPageNotFound);
 
 mongoConnect(() => {
-    console.log(client);
     app.listen(3000);
 });
