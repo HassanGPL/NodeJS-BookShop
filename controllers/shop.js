@@ -32,22 +32,22 @@ exports.getIndex = (req, res, next) => {
     });
 }
 
-// exports.getProduct = (req, res, next) => {
-//     const productID = req.params.productID;
+exports.getProduct = (req, res, next) => {
+    const productID = req.params.productID;
 
-//     // return specific product in database
-//     Product.findByPk(productID)
-//         .then(product => {
-//             res.render('shop/product-details', {
-//                 product: product,
-//                 Title: product.title,
-//                 path: ''
-//             });
-//         }).catch(err => {
-//             console.log(err);
-//         });
+    // return specific product in database
+    Product.findById(productID)
+        .then(product => {
+            res.render('shop/product-details', {
+                product: product,
+                Title: product.title,
+                path: ''
+            });
+        }).catch(err => {
+            console.log(err);
+        });
 
-// }
+}
 
 // exports.getCart = (req, res, next) => {
 
