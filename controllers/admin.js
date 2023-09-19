@@ -83,19 +83,16 @@ exports.postEditProduct = (req, res, next) => {
         .catch(err => console.log(err));
 }
 
-// exports.postDeleteProduct = (req, res, next) => {
+exports.postDeleteProduct = (req, res, next) => {
 
-//     // Get product ID from request
-//     const productID = req.body.productID;
+    // Get product ID from request
+    const productID = req.body.productID;
 
-//     // delete product in database
-//     Product.findByPk(productID)
-//         .then(product => {
-//             return product.destroy();
-//         })
-//         .then(result => {
-//             console.log("DELETED SUCCESSFULLY")
-//             res.redirect('/admin/products');
-//         })
-//         .catch(err => console.log(err));
-// }
+    // delete product in database
+    Product.deleteById(productID)
+        .then(result => {
+            console.log("DELETED SUCCESSFULLY!")
+            res.redirect('/admin/products');
+        })
+        .catch(err => console.log(err));
+}
