@@ -29,7 +29,7 @@
                                     <a href="/products/<%= product._id %>" class="btn">Details</a>
                                     <form action="/cart" method="post">
                                         <button type="submit" class="btn"> Add to Cart </button>
-                                        <input type="hidden" name="productID" value="<%= product.id %>">
+                                        <input type="hidden" name="productID" value="<%= product._id %>">
                                     </form>
                                 </div>
                             </article>

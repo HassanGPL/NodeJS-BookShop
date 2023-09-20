@@ -1,9 +1,9 @@
 const Product = require('../models/product');
 const Cart = require('../models/cart');
 const Order = require('../models/order');
+const User = require('../models/user');
 
 exports.getProducts = (req, res, next) => {
-
     // return all products in database
     Product.fetchAll()
         .then(products => {
@@ -67,38 +67,50 @@ exports.getProduct = (req, res, next) => {
 //         });
 // }
 
-// exports.postCart = (req, res, next) => {
-//     const productID = req.body.productID;
-//     let foundedCart;
-//     let newQuantity = 1;
-//     req.user.getCart()
-//         .then(cart => {
-//             foundedCart = cart;
-//             return cart.getProducts({ where: { id: productID } });
-//         })
-//         .then(products => {
-//             let product;
+exports.postCart = (req, res, next) => {
+    const productID = req.body.productID;
+    Product.findById(productID)
+        .then(product => {
+            req.user.addToCart(product)
+                .then(result => {
+                    console.log(result);
+                });
+        })
+        .catch(err => {
+            console.log(err);
+        });
 
-//             if (products.length > 0) {
-//                 product = products[0];
-//             }
 
-//             if (product) {
-//                 const oldQuantity = product.cartItem.quantity;
-//                 newQuantity = oldQuantity + 1;
-//             }
+    // let foundedCart;
+    // let newQuantity = 1;
+    // req.user.getCart()
+    //     .then(cart => {
+    //         foundedCart = cart;
+    //         return cart.getProducts({ where: { id: productID } });
+    //     })
+    //     .then(products => {
+    //         let product;
 
-//             return Product.findByPk(productID);
-//         })
-//         .then(product => {
-//             return foundedCart.addProduct(product, { through: { quantity: newQuantity } });
-//         })
-//         .then(() => {
-//             res.redirect('/cart');
-//         })
-//         .catch(err => console.log(err));
+    //         if (products.length > 0) {
+    //             product = products[0];
+    //         }
 
-// }
+    //         if (product) {
+    //             const oldQuantity = product.cartItem.quantity;
+    //             newQuantity = oldQuantity + 1;
+    //         }
+
+    //         return Product.findByPk(productID);
+    //     })
+    //     .then(product => {
+    //         return foundedCart.addProduct(product, { through: { quantity: newQuantity } });
+    //     })
+    //     .then(() => {
+    //         res.redirect('/cart');
+    //     })
+    //     .catch(err => console.log(err));
+
+}
 
 
 
