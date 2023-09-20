@@ -40,6 +40,7 @@ class User {
             .updateOne({ _id: new mongodb.ObjectId(this._id) }, { $set: { cart: updatedCart } });
     }
 
+
     getCart() {
         const db = getDb();
         const productsIds = this.cart.items.map(p => {
@@ -61,6 +62,20 @@ class User {
             })
 
     }
+
+
+    deleteItemFromCart(productId) {
+        const cartItems = this.cart.items.filter(item => {
+            return item.productId.toString() !== productId.toString();
+        });
+
+        const db = getDb();
+        const updatedCart = { items: cartItems };
+        return db
+            .collection('users')
+            .updateOne({ _id: new mongodb.ObjectId(this._id) }, { $set: { cart: updatedCart } });
+    }
+
 
     static findById(userId) {
         const db = getDb();
