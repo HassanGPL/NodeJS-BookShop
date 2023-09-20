@@ -40,6 +40,28 @@ class User {
             .updateOne({ _id: new mongodb.ObjectId(this._id) }, { $set: { cart: updatedCart } });
     }
 
+    getCart() {
+        const db = getDb();
+        const productsIds = this.cart.items.map(p => {
+            return p.productId;
+        })
+
+        return db.collection('products')
+            .find({ _id: { $in: productsIds } })
+            .toArray()
+            .then(products => {
+                return products.map(p => {
+                    return {
+                        ...p,
+                        quantity: this.cart.items.find(p2 => {
+                            return p._id.toString() === p2.productId.toString();
+                        }).quantity
+                    }
+                })
+            })
+
+    }
+
     static findById(userId) {
         const db = getDb();
         return db.collection('users').findOne({ _id: new mongodb.ObjectId(userId) })
