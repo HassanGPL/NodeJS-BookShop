@@ -6,7 +6,7 @@ const body = require('body-parser');
 
 const pagenotfoundController = require('./controllers/pagenotfound');
 const mongoConnect = require('./helpers/databases').mongoConnect;
-
+const User = require('./models/user');
 
 const app = express();
 
@@ -23,15 +23,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // store user in request with middleware
 app.use((req, res, next) => {
-    // User.findByPk(1)
-    //     .then(user => {
-    //         req.user = user;
-    //         next();
-    //     }
-    //     ).catch(err => {
-    //         console.log(err);
-    //     });
-    next();
+    User.findById('650ac6c740a0c8b22ce2b844')
+        .then(user => {
+            req.user = user;
+            next();
+        }
+        ).catch(err => {
+            console.log(err);
+        });
 });
 
 
