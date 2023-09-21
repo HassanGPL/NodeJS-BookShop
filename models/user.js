@@ -43,11 +43,13 @@ class User {
 
     getCart() {
         const db = getDb();
+        // mapping cart items to be [ Ids ]
         const productsIds = this.cart.items.map(p => {
             return p.productId;
         })
 
         return db.collection('products')
+            // find products with the same Ids
             .find({ _id: { $in: productsIds } })
             .toArray()
             .then(products => {

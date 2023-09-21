@@ -51,6 +51,9 @@ class Product {
         const db = getDb();
         return db.collection('products').deleteOne({ _id: new mongodb.ObjectId(productId) })
             .then(result => {
+                db.collection('users')
+                    .updateMany({ 'cart.items.productId': new mongodb.ObjectId(productId) },
+                        { $pull: { 'cart.items': { productId: new mongodb.ObjectId(productId) } } });
                 console.log(result);
             })
             .catch(err => {
@@ -59,30 +62,5 @@ class Product {
     }
 
 }
-
-
-// const Product = sequelize.define('product', {
-//     id: {
-//         type: DataTypes.INTEGER,
-//         allowNull: false,
-//         autoIncrement: true,
-//         primaryKey: true
-//     },
-//     title: {
-//         type: DataTypes.STRING
-//     },
-//     price: {
-//         type: DataTypes.DOUBLE,
-//         allowNull: false
-//     },
-//     imageUrl: {
-//         type: DataTypes.STRING,
-//         allowNull: false
-//     },
-//     description: {
-//         type: DataTypes.STRING,
-//         allowNull: false
-//     }
-// });
 
 module.exports = Product;
