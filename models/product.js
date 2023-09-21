@@ -51,9 +51,9 @@ class Product {
         const db = getDb();
         return db.collection('products').deleteOne({ _id: new mongodb.ObjectId(productId) })
             .then(result => {
-                db.collection('users')
-                    .updateMany({ 'cart.items.productId': new mongodb.ObjectId(productId) },
-                        { $pull: { 'cart.items': { productId: new mongodb.ObjectId(productId) } } });
+                // db.collection('users')
+                //     .updateMany({ 'cart.items.productId': new mongodb.ObjectId(productId) },
+                //         { $pull: { 'cart.items': { productId: new mongodb.ObjectId(productId) } } });
                 console.log(result);
             })
             .catch(err => {
