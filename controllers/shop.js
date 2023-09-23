@@ -1,6 +1,4 @@
 const Product = require('../models/product');
-const Cart = require('../models/cart');
-const Order = require('../models/order');
 const User = require('../models/user');
 
 exports.getProducts = (req, res, next) => {

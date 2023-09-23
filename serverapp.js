@@ -1,11 +1,9 @@
-const { Sequelize, DataTypes } = require('sequelize');
-
 const path = require('path');
 const express = require('express');
 const body = require('body-parser');
 
 const pagenotfoundController = require('./controllers/pagenotfound');
-const mongoConnect = require('./helpers/databases').mongoConnect;
+const mongoose = require('mongoose');
 const User = require('./models/user');
 
 const app = express();
@@ -39,6 +37,12 @@ app.use(shopRoutes);
 
 app.use(pagenotfoundController.getPageNotFound);
 
-mongoConnect(() => {
-    app.listen(3000);
-});
+mongoose
+    .connect('mongodb+srv://hassan:RCv4mUtefbTAZBOJ@cluster0.ru5cwqx.mongodb.net/shop?retryWrites=true&w=majority')
+    .then(result => {
+        console.log(`CONNECTED SUCCESSFULLY !`);
+        app.listen(3000);
+    })
+    .catch(err => {
+        console.log(err);
+    })
