@@ -4,7 +4,7 @@ const body = require('body-parser');
 
 const pagenotfoundController = require('./controllers/pagenotfound');
 const mongoose = require('mongoose');
-const User = require('./models/user');
+// const User = require('./models/user');
 
 const app = express();
 
@@ -20,16 +20,16 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 // store user in request with middleware
-app.use((req, res, next) => {
-    User.findById('650ac6c740a0c8b22ce2b844')
-        .then(user => {
-            req.user = new User(user.username, user.email, user._id, user.cart);
-            next();
-        }
-        ).catch(err => {
-            console.log(err);
-        });
-});
+// app.use((req, res, next) => {
+//     User.findById('650ac6c740a0c8b22ce2b844')
+//         .then(user => {
+//             req.user = new User(user.username, user.email, user._id, user.cart);
+//             next();
+//         }
+//         ).catch(err => {
+//             console.log(err);
+//         });
+// });
 
 
 app.use('/admin', adminRoutes);

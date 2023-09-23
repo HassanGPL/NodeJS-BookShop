@@ -29,7 +29,12 @@ exports.postAddProduct = (req, res, next) => {
     const description = req.body.description;
     const price = req.body.price;
 
-    const product = new Product(title, price, imageUrl, description, null, req.user._id);
+    const product = new Product({
+        title: title,
+        imageUrl: imageUrl,
+        description: description,
+        price: price
+    });
 
     // Add a new product to database
     product.save()
