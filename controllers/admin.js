@@ -99,7 +99,7 @@ exports.postDeleteProduct = (req, res, next) => {
     const productID = req.body.productID;
 
     // delete product in database
-    Product.deleteById(productID)
+    Product.findByIdAndDelete(productID)
         .then(result => {
             console.log("DELETED SUCCESSFULLY!")
             res.redirect('/admin/products');
