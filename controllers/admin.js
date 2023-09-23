@@ -3,7 +3,7 @@ const Product = require('../models/product');
 
 exports.getAdminProducts = (req, res, next) => {
     // return all products in database
-    Product.fetchAll()
+    Product.find()
         .then(products => {
             res.render('admin/products', {
                 products: products,

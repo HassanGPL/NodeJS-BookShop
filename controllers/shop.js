@@ -3,7 +3,7 @@ const User = require('../models/user');
 
 exports.getProducts = (req, res, next) => {
     // return all products in database
-    Product.fetchAll()
+    Product.find()
         .then(products => {
             res.render('shop/products-list', {
                 products: products,
@@ -19,15 +19,16 @@ exports.getProducts = (req, res, next) => {
 exports.getIndex = (req, res, next) => {
 
     // return all products in database
-    Product.fetchAll().then(products => {
-        res.render('shop/index', {
-            products: products,
-            Title: "Shop",
-            path: '/'
+    Product.find()
+        .then(products => {
+            res.render('shop/index', {
+                products: products,
+                Title: "Shop",
+                path: '/'
+            });
+        }).catch(err => {
+            console.log(err);
         });
-    }).catch(err => {
-        console.log(err);
-    });
 }
 
 exports.getProduct = (req, res, next) => {
