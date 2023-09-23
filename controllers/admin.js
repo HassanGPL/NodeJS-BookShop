@@ -53,7 +53,6 @@ exports.getEditProduct = (req, res, next) => {
     }
 
     const productID = req.params.productID;
-
     // return specific product in database
     Product.findById(productID)
         .then(product => {
@@ -78,9 +77,15 @@ exports.postEditProduct = (req, res, next) => {
     const updatedDescription = req.body.description;
     const updatedPrice = req.body.price;
 
-    const product = new Product(updatedTitle, updatedPrice, updatedImageUrl, updatedDescription, _id);
-    // update product data in database
-    product.save()
+    Product.findByIdAndUpdate(_id, {
+        title: updatedTitle,
+        price: updatedPrice,
+        description: updatedDescription,
+        imageUrl: updatedImageUrl
+    })
+        // const product = new Product(updatedTitle, updatedPrice, updatedImageUrl, updatedDescription, _id);
+        // // update product data in database
+        // product.save()
         .then(result => {
             console.log("UPDATED SUCCESSFULLY!")
             res.redirect('/admin/products');
