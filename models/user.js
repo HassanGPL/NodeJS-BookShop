@@ -53,7 +53,6 @@ userSchema.methods.getCart = function (product) {
     return Product
         // find products with the same Ids
         .find({ _id: { $in: productsIds } })
-        // .toArray()
         .then(products => {
             const updatedCartItems = this.cart.items.filter(item => {
                 return products.some(product => item.productId.toString() === product._id.toString())
@@ -64,6 +63,7 @@ userSchema.methods.getCart = function (product) {
             return products.map(p => {
                 return {
                     title: p.title,
+                    _id: p._id,
                     quantity: this.cart.items.find(p2 => {
                         return p._id.toString() === p2.productId.toString();
                     }).quantity
