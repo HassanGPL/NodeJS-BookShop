@@ -4,6 +4,8 @@ const Product = require('../models/product');
 exports.getAdminProducts = (req, res, next) => {
     // return all products in database
     Product.find()
+        // .select('title price')
+        // .populate('userId', 'name')
         .then(products => {
             res.render('admin/products', {
                 products: products,

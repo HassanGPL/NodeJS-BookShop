@@ -49,7 +49,6 @@ exports.getProduct = (req, res, next) => {
 }
 
 exports.getCart = (req, res, next) => {
-
     req.user.getCart()
         .then(products => {
             res.render('shop/cart', {
