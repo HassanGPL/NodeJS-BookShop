@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 
-
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -16,6 +15,7 @@ const userSchema = new mongoose.Schema({
         items: [{
             productId: {
                 type: mongoose.Schema.Types.ObjectId,
+                ref: 'Product',
                 required: true
             },
             quantity: {
@@ -28,7 +28,6 @@ const userSchema = new mongoose.Schema({
 
 
 module.exports = mongoose.model('User', userSchema);
-
 
 
 // const mongodb = require('mongodb');

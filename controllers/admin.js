@@ -33,7 +33,8 @@ exports.postAddProduct = (req, res, next) => {
         title: title,
         imageUrl: imageUrl,
         description: description,
-        price: price
+        price: price,
+        userId: req.user
     });
 
     // Add a new product to database

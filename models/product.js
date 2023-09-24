@@ -20,6 +20,11 @@ const productSchema = new Schema({
         type: String,
         trim: true,
         required: true
+    },
+    userId: {
+        type: Schema.Types.ObjectId,
+        required: true,
+        ref: 'User'
     }
 });
 
