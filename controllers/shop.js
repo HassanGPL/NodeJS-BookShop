@@ -80,7 +80,7 @@ exports.postCart = (req, res, next) => {
 
 
 
-exports.postDeleteProduct = (req, res, next) => {
+exports.postCartDeleteProduct = (req, res, next) => {
     const prodID = req.body.productId;
     req.user
         .deleteItemFromCart(prodID)
