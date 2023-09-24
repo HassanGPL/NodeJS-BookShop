@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+const Product = require('./product');
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -39,10 +39,46 @@ userSchema.methods.addToCart = function (product) {
     }
 
     const updatedCart = { items: cartItems };
-    console.log(updatedCart);
     this.cart = updatedCart;
     return this.save()
 }
+
+userSchema.methods.getCart = function (product) {
+
+    // mapping cart items to be [ Ids ]
+    const productsIds = this.cart.items.map(p => {
+        return p.productId;
+    })
+
+    return Product
+        // find products with the same Ids
+        .find({ _id: { $in: productsIds } })
+        // .toArray()
+        .then(products => {
+            const updatedCartItems = this.cart.items.filter(item => {
+                return products.some(product => item.productId.toString() === product._id.toString())
+            });
+            this.cart.items = updatedCartItems;
+            this.save();
+            // db.collection('users')
+            //     .updateOne(
+            //         { _id: new mongodb.ObjectId(this._id) },
+            //         { $set: { cart: { items: updatedCartItems } } }
+            //     );
+            console.log(products);
+            return products.map(p => {
+                return {
+                    title: p.title,
+                    quantity: this.cart.items.find(p2 => {
+                        return p._id.toString() === p2.productId.toString();
+                    }).quantity
+                }
+
+            })
+        })
+
+}
+
 
 module.exports = mongoose.model('User', userSchema);
 
