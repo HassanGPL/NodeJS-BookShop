@@ -51,13 +51,12 @@ exports.getProduct = (req, res, next) => {
 
 exports.getCart = (req, res, next) => {
     req.user
-        .getCart()
-        // .populate('cart.items.productId')
-        .then(products => {
+        .populate('cart.items.productId')
+        .then(user => {
             res.render('shop/cart', {
                 Title: "Cart",
                 path: '/cart',
-                products: products
+                products: user.cart.items
             });
         })
         .catch(err => {
@@ -95,8 +94,24 @@ exports.postCartDeleteProduct = (req, res, next) => {
 
 
 exports.postOrder = (req, res, next) => {
-    req.user.addOrder()
+    req.user
+        .populate('cart.items.productId')
+        .then(user => {
+            const products = user.cart.items.map(p => {
+                return { quantity: p.quantity, product: { ...p.productId._doc } };
+            });
+            const order = new Order({
+                user: {
+                    userId: req.user._id,
+                    name: req.user.name
+                },
+                products: products
+            });
+            return order.save();
+        })
         .then(() => {
+            return req.user.clearCart();
+        }).then(() => {
             res.redirect('/orders');
         })
         .catch(err => console.log(err));
