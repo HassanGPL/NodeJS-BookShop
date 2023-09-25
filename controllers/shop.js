@@ -1,5 +1,6 @@
 const Product = require('../models/product');
 const User = require('../models/user');
+const Order = require('../models/order');
 
 exports.getProducts = (req, res, next) => {
     // return all products in database
@@ -103,7 +104,7 @@ exports.postOrder = (req, res, next) => {
 
 
 exports.getOrders = (req, res, next) => {
-    req.user.getOrders()
+    Order.find({ 'user.userId': req.user._id })
         .then(orders => {
             res.render('shop/orders', {
                 Title: "Orders",
@@ -113,10 +114,3 @@ exports.getOrders = (req, res, next) => {
         })
         .catch(err => console.log(err));
 }
-
-
-
-
-// // exports.getCheckout = (req, res, next) => {
-// //     res.render('shop/checkout', { Title: "Checkout", path: '/checkout' });
-// // }

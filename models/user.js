@@ -110,21 +110,6 @@ userSchema.methods.addOrder = function () {
 }
 
 
-userSchema.methods.getOrders = function () {
-    // const db = getDb();
-    return Order
-        .find({ 'user.userId': this._id })
-        .then(orders => {
-            return orders.map(o => {
-                return {
-                    _id: o._id,
-                    products: o.products
-                }
-            })
-        })
-}
-
-
 
 module.exports = mongoose.model('User', userSchema);
 
