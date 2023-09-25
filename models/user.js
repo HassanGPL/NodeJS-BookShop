@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
 const Product = require('./product');
+const Order = require('./order');
+
+
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -59,11 +62,10 @@ userSchema.methods.getCart = function (product) {
             });
             this.cart.items = updatedCartItems;
             this.save();
-            console.log(products);
             return products.map(p => {
                 return {
                     title: p.title,
-                    _id: p._id,
+                    product: p._doc,
                     quantity: this.cart.items.find(p2 => {
                         return p._id.toString() === p2.productId.toString();
                     }).quantity
@@ -82,6 +84,47 @@ userSchema.methods.deleteItemFromCart = function (productId) {
     this.cart.items = cartItems;
     return this.save()
 }
+
+
+userSchema.methods.addOrder = function () {
+    // const db = getDb();
+    return this.getCart()
+        .then(products => {
+            const order = {
+                products: products,
+                user: {
+                    userId: this._id,
+                    name: this.name,
+                    email: this.email
+                }
+            }
+            return Order.create(order);
+        })
+        .then(result => {
+            this.cart = { items: [] };
+            return this.save();
+        })
+        .catch(err => {
+            console.log(err);
+        })
+}
+
+
+// userSchema.methods.getOrders = function () {
+//     // const db = getDb();
+//     return Order
+//         .find({ 'user._id': this._id })
+//         .toArray()
+//         .then(orders => {
+//             return orders.map(o => {
+//                 return {
+//                     _id: o._id,
+//                     items: o.items
+//                 }
+//             })
+//         })
+// }
+
 
 
 module.exports = mongoose.model('User', userSchema);
