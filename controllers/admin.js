@@ -10,7 +10,8 @@ exports.getAdminProducts = (req, res, next) => {
             res.render('admin/products', {
                 products: products,
                 Title: "Admin Products",
-                path: '/admin/products'
+                path: '/admin/products',
+                isAuthenticated: false
             });
         }).catch(err => {
             console.log(err);
@@ -21,7 +22,8 @@ exports.getAddProduct = (req, res, next) => {
     res.render('admin/edit-product', {
         Title: "Add Product",
         path: '/admin/add-product',
-        edit: false
+        edit: false,
+        isAuthenticated: false
     });
 }
 
