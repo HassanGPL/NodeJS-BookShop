@@ -1,12 +1,18 @@
 const path = require('path');
+const mongoose = require('mongoose');
 const express = require('express');
 const body = require('body-parser');
+const session = require('express-session');
+const mongoDBSession = require('connect-mongodb-session')(session);
 
 const pagenotfoundController = require('./controllers/pagenotfound');
-const mongoose = require('mongoose');
 const User = require('./models/user');
 
 const app = express();
+const store = new mongoDBSession({
+    uri: 'mongodb+srv://hassan:RCv4mUtefbTAZBOJ@cluster0.ru5cwqx.mongodb.net/shop?retryWrites=true&w=majority',
+    collection: 'sessions'
+})
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
@@ -16,9 +22,14 @@ const shopRoutes = require('./routes/shop');
 const authRoutes = require('./routes/auth');
 
 app.use(body.urlencoded({ extended: false }));
-
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(session({
+    secret: 'Faculty of Computer and Information Sciences - Ain Shams University',
+    resave: false,
+    saveUninitialized: false,
+    store: store
+}));
 
 // store user in request with middleware
 app.use((req, res, next) => {
