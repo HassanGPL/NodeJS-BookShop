@@ -33,7 +33,10 @@ app.use(session({
 
 // store user in request with middleware
 app.use((req, res, next) => {
-    User.findById('65101d2dac2d4e6f5ef6e8c3')
+    if (!req.session.user) {
+        return next();
+    }
+    User.findById(req.session.user._id)
         .then(user => {
             req.user = user;
             next();
@@ -41,6 +44,7 @@ app.use((req, res, next) => {
         ).catch(err => {
             console.log(err);
         });
+
 });
 
 

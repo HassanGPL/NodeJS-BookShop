@@ -1,6 +1,5 @@
 const Product = require('../models/product');
 
-
 exports.getAdminProducts = (req, res, next) => {
     // return all products in database
     Product.find()
@@ -11,7 +10,7 @@ exports.getAdminProducts = (req, res, next) => {
                 products: products,
                 Title: "Admin Products",
                 path: '/admin/products',
-                isAuthenticated: false
+                isAuthenticated: req.session.isLoggedIn
             });
         }).catch(err => {
             console.log(err);
@@ -23,7 +22,7 @@ exports.getAddProduct = (req, res, next) => {
         Title: "Add Product",
         path: '/admin/add-product',
         edit: false,
-        isAuthenticated: false
+        isAuthenticated: req.session.isLoggedIn
     });
 }
 
@@ -69,6 +68,7 @@ exports.getEditProduct = (req, res, next) => {
                 path: '/admin/edit-product',
                 product: product,
                 edit: editMode,
+                isAuthenticated: req.session.isLoggedIn
             });
         }).catch(err => console.log(err));
 }
@@ -81,14 +81,7 @@ exports.postEditProduct = (req, res, next) => {
     const updatedImageUrl = req.body.imageUrl;
     const updatedDescription = req.body.description;
     const updatedPrice = req.body.price;
-    // Product.findById(_id)
-    //     .then(product => {
-    //     product.title = updatedTitle;
-    //     product.imageUrl = updatedImageUrl;
-    //     product.price = updatedPrice;
-    //     product.description = updatedDescription;
-    //     product.save();
-    // })
+
     Product.findByIdAndUpdate(_id, {
         title: updatedTitle,
         price: updatedPrice,

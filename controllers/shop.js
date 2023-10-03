@@ -10,7 +10,7 @@ exports.getProducts = (req, res, next) => {
                 products: products,
                 Title: 'Products',
                 path: '/products',
-                isAuthenticated: false
+                isAuthenticated: req.session.isLoggedIn
             });
         }).catch(err => {
             console.log(err);
@@ -27,7 +27,7 @@ exports.getIndex = (req, res, next) => {
                 products: products,
                 Title: "Shop",
                 path: '/',
-                isAuthenticated: false
+                isAuthenticated: req.session.isLoggedIn
             });
         }).catch(err => {
             console.log(err);
@@ -44,7 +44,7 @@ exports.getProduct = (req, res, next) => {
                 product: product,
                 Title: product.title,
                 path: '',
-                isAuthenticated: false
+                isAuthenticated: req.session.isLoggedIn
             });
         }).catch(err => {
             console.log(err);
@@ -60,7 +60,7 @@ exports.getCart = (req, res, next) => {
                 Title: "Cart",
                 path: '/cart',
                 products: user.cart.items,
-                isAuthenticated: false
+                isAuthenticated: req.session.isLoggedIn
             });
         })
         .catch(err => {
@@ -72,7 +72,8 @@ exports.postCart = (req, res, next) => {
     const productID = req.body.productID;
     Product.findById(productID)
         .then(product => {
-            return req.user.addToCart(product);
+            return req.user
+                .addToCart(product);
         })
         .then(() => {
             res.redirect('/cart');
@@ -129,7 +130,7 @@ exports.getOrders = (req, res, next) => {
                 Title: "Orders",
                 path: '/orders',
                 orders: orders,
-                isAuthenticated: false
+                isAuthenticated: req.session.isLoggedIn
             });
         })
         .catch(err => console.log(err));
