@@ -1,4 +1,5 @@
 const path = require('path');
+require('dotenv').config();
 const mongoose = require('mongoose');
 const express = require('express');
 const body = require('body-parser');
@@ -10,7 +11,7 @@ const User = require('./models/user');
 
 const app = express();
 const store = new mongoDBSession({
-    uri: 'mongodb+srv://hassan:RCv4mUtefbTAZBOJ@cluster0.ru5cwqx.mongodb.net/shop?retryWrites=true&w=majority',
+    uri: process.env.MONGO_URI,
     collection: 'sessions'
 })
 
@@ -56,7 +57,7 @@ app.use(authRoutes);
 app.use(pagenotfoundController.getPageNotFound);
 
 mongoose
-    .connect('mongodb+srv://hassan:RCv4mUtefbTAZBOJ@cluster0.ru5cwqx.mongodb.net/shop?retryWrites=true&w=majority')
+    .connect(process.env.MONGO_URI)
     .then(result => {
         console.log(`CONNECTED SUCCESSFULLY !`);
         User.findOne()
