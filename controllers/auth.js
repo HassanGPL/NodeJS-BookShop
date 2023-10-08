@@ -1,5 +1,15 @@
 const User = require('../models/user');
 
+exports.getSignup = (req, res, next) => {
+    res.render('auth/signup', {
+        path: '/signup',
+        Title: 'Signup',
+        isAuthenticated: false
+    });
+};
+
+exports.postSignup = (req, res, next) => { };
+
 exports.getLogin = (req, res, next) => {
     // const logged = req.get('Cookie').split('=')[1];
     console.log(req.session.isLoggedIn);
@@ -27,4 +37,4 @@ exports.postLogout = (req, res, next) => {
         console.log(err);
         res.redirect('/');
     });
-} 
+}
