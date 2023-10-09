@@ -19,24 +19,23 @@ exports.postSignup = (req, res, next) => {
             if (user) {
                 return res.redirect('/signup');
             }
-            return bcrybtjs.hash(password, 12);
-        })
-        .then(hashedPassword => {
-            const newUser = new User({
-                email: email,
-                password: hashedPassword,
-                cart: { items: [] }
-            });
-            return newUser.save();
-        })
-        .then(result => {
-            res.redirect('/login');
+            return bcrybtjs
+                .hash(password, 12)
+                .then(hashedPassword => {
+                    const newUser = new User({
+                        email: email,
+                        password: hashedPassword,
+                        cart: { items: [] }
+                    });
+                    return newUser.save();
+                })
+                .then(result => {
+                    res.redirect('/login');
+                });
         })
         .catch(err => {
             console.log(err);
         });
-
-
 };
 
 exports.getLogin = (req, res, next) => {
