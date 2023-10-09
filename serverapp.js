@@ -60,19 +60,6 @@ mongoose
     .connect(process.env.MONGO_URI)
     .then(result => {
         console.log(`CONNECTED SUCCESSFULLY !`);
-        User.findOne()
-            .then(user => {
-                if (!user) {
-                    User.create({
-                        name: 'Hassan',
-                        email: 'Hassan@test.com',
-                        cart: {
-                            items: []
-                        }
-                    });
-                }
-            });
-
         app.listen(3000);
     })
     .catch(err => {

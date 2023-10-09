@@ -1,3 +1,5 @@
+const bcrybtjs = require('bcryptjs');
+
 const User = require('../models/user');
 
 exports.getSignup = (req, res, next) => {
@@ -8,7 +10,34 @@ exports.getSignup = (req, res, next) => {
     });
 };
 
-exports.postSignup = (req, res, next) => { };
+exports.postSignup = (req, res, next) => {
+    const email = req.body.email;
+    const password = req.body.password;
+    const confirmPassword = req.body.confirmPassword;
+    User.findOne({ email: email })
+        .then(user => {
+            if (user) {
+                return res.redirect('/signup');
+            }
+            return bcrybtjs.hash(password, 12);
+        })
+        .then(hashedPassword => {
+            const newUser = new User({
+                email: email,
+                password: hashedPassword,
+                cart: { items: [] }
+            });
+            return newUser.save();
+        })
+        .then(result => {
+            res.redirect('/login');
+        })
+        .catch(err => {
+            console.log(err);
+        });
+
+
+};
 
 exports.getLogin = (req, res, next) => {
     // const logged = req.get('Cookie').split('=')[1];
