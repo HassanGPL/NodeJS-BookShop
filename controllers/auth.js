@@ -49,14 +49,29 @@ exports.getLogin = (req, res, next) => {
 }
 
 exports.postLogin = (req, res, next) => {
-    User.findById('65101d2dac2d4e6f5ef6e8c3')
+    const email = req.body.email;
+    const password = req.body.password;
+    User.findOne({ email: email })
         .then((user) => {
-            req.session.isLoggedIn = true;
-            req.session.user = user;
-            req.session.save((err) => {
-                console.log(err);
-                res.redirect('/');
-            });
+            if (!user) {
+                return res.redirect('/login');
+            }
+
+            bcrybtjs.compare(password, user.password)
+                .then(result => {
+                    if (result) {
+                        req.session.isLoggedIn = true;
+                        req.session.user = user;
+                        return req.session.save((err) => {
+                            res.redirect('/');
+                        });
+                    }
+                    return res.redirect('/login');
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+
         });
 }
 
