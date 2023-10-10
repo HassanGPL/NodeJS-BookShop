@@ -5,8 +5,7 @@ const User = require('../models/user');
 exports.getSignup = (req, res, next) => {
     res.render('auth/signup', {
         path: '/signup',
-        Title: 'Signup',
-        isAuthenticated: false
+        Title: 'Signup'
     });
 };
 
@@ -43,8 +42,7 @@ exports.getLogin = (req, res, next) => {
     console.log(req.session.isLoggedIn);
     res.render('auth/login', {
         Title: "Login",
-        path: '/login',
-        isAuthenticated: req.session.isLoggedIn
+        path: '/login'
     });
 }
 
