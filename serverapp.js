@@ -5,6 +5,7 @@ const express = require('express');
 const body = require('body-parser');
 const session = require('express-session');
 const mongoDBSession = require('connect-mongodb-session')(session);
+const csrf = require('csurf');
 
 const pagenotfoundController = require('./controllers/pagenotfound');
 const User = require('./models/user');
@@ -14,6 +15,7 @@ const store = new mongoDBSession({
     uri: process.env.MONGO_URI,
     collection: 'sessions'
 })
+const csrfProtection = csrf();
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
@@ -32,6 +34,8 @@ app.use(session({
     store: store
 }));
 
+app.use(csrfProtection);
+
 // store user in request with middleware
 app.use((req, res, next) => {
     if (!req.session.user) {
@@ -47,6 +51,12 @@ app.use((req, res, next) => {
         });
 
 });
+
+app.use((req, res, next) => {
+    res.locals.isAuthenticated = req.session.isLoggedIn;
+    res.locals.csrfToken = req.csrfToken();
+    next();
+})
 
 
 app.use('/admin', adminRoutes);
