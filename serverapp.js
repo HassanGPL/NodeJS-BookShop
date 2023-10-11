@@ -6,6 +6,7 @@ const body = require('body-parser');
 const session = require('express-session');
 const mongoDBSession = require('connect-mongodb-session')(session);
 const csrf = require('csurf');
+const flash = require('connect-flash');
 
 const pagenotfoundController = require('./controllers/pagenotfound');
 const User = require('./models/user');
@@ -35,6 +36,7 @@ app.use(session({
 }));
 
 app.use(csrfProtection);
+app.use(flash());
 
 // store user in request with middleware
 app.use((req, res, next) => {
