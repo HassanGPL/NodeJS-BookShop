@@ -3,7 +3,6 @@ const nodemailer = require('nodemailer');
 const sendgridTransport = require('nodemailer-sendgrid-transport');
 
 const User = require('../models/user');
-const auth = require('../middlewares/auth');
 
 const transporter = nodemailer.createTransport(sendgridTransport({
     auth: {
