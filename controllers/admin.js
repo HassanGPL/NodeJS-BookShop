@@ -2,7 +2,7 @@ const Product = require('../models/product');
 
 exports.getAdminProducts = (req, res, next) => {
     // return all products in database
-    Product.find()
+    Product.find({ userId: req.user._id })
         // .select('title price')
         // .populate('userId', 'name')
         .then(products => {
@@ -73,23 +73,29 @@ exports.getEditProduct = (req, res, next) => {
 
 exports.postEditProduct = (req, res, next) => {
     // catch data from request
-    const _id = req.body.ID;
+    const productID = req.body.ID;
     const updatedTitle = req.body.title;
     const updatedImageUrl = req.body.imageUrl;
     const updatedDescription = req.body.description;
     const updatedPrice = req.body.price;
 
-    Product.findByIdAndUpdate(_id, {
-        title: updatedTitle,
-        price: updatedPrice,
-        description: updatedDescription,
-        imageUrl: updatedImageUrl
-    })
-        .then(result => {
-            console.log("UPDATED SUCCESSFULLY!")
-            res.redirect('/admin/products');
+    Product.findById(productID)
+        .then(product => {
+            if (product.userId.toString() !== req.user._id.toString()) {
+                return res.redirect('/');
+            }
+            product.title = updatedTitle;
+            product.price = updatedPrice;
+            product.description = updatedDescription;
+            product.imageUrl = updatedImageUrl;
+            return product.save().then(result => {
+                console.log("UPDATED SUCCESSFULLY!")
+                res.redirect('/admin/products');
+            });
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+            console.log(err);
+        });
 }
 
 exports.postDeleteProduct = (req, res, next) => {
@@ -98,7 +104,7 @@ exports.postDeleteProduct = (req, res, next) => {
     const productID = req.body.productID;
 
     // delete product in database
-    Product.findByIdAndDelete(productID)
+    Product.deleteOne({ _id: productID, userId: req.user._id })
         .then(result => {
             console.log(result);
             console.log("DELETED SUCCESSFULLY!")
