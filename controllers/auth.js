@@ -29,7 +29,7 @@ exports.getSignup = (req, res, next) => {
 exports.postSignup = (req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
-    const confirmPassword = req.body.confirmPassword;
+
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         console.log(errors.array());
@@ -40,38 +40,38 @@ exports.postSignup = (req, res, next) => {
         });
     }
 
-    User.findOne({ email: email })
-        .then(user => {
-            if (user) {
-                req.flash('error', 'This user already exist...');
-                return res.redirect('/signup');
-            }
-            return bcrybtjs
-                .hash(password, 12)
-                .then(hashedPassword => {
-                    const newUser = new User({
-                        email: email,
-                        password: hashedPassword,
-                        cart: { items: [] }
-                    });
-                    return newUser.save();
-                })
-                .then(result => {
-                    res.redirect('/login');
-                    return transporter.sendMail({
-                        to: email,
-                        from: 'ahmedhassanmana@gmail.com',
-                        subject: 'Signup',
-                        html: '<h1>You successfully signed up !</h1>'
-                    })
-                })
-                .catch(err => {
-                    console.log(err);
-                });
+    // User.findOne({ email: email })
+    //     .then(user => {
+    //         if (user) {
+    //             req.flash('error', 'This user already exist...');
+    //             return res.redirect('/signup');
+    //         }
+    bcrybtjs
+        .hash(password, 12)
+        .then(hashedPassword => {
+            const newUser = new User({
+                email: email,
+                password: hashedPassword,
+                cart: { items: [] }
+            });
+            return newUser.save();
+        })
+        .then(result => {
+            res.redirect('/login');
+            return transporter.sendMail({
+                to: email,
+                from: 'ahmedhassanmana@gmail.com',
+                subject: 'Signup',
+                html: '<h1>You successfully signed up !</h1>'
+            })
         })
         .catch(err => {
             console.log(err);
         });
+    // });
+    // .catch(err => {
+    //     console.log(err);
+    // });
 };
 
 exports.getLogin = (req, res, next) => {
