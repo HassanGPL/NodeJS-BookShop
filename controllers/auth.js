@@ -22,13 +22,19 @@ exports.getSignup = (req, res, next) => {
     res.render('auth/signup', {
         path: '/signup',
         Title: 'Signup',
-        eMessage: message
+        eMessage: message,
+        oldInput: {
+            email: '',
+            password: '',
+            confirmPassword: ''
+        }
     });
 };
 
 exports.postSignup = (req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
+    const confirmPassword = req.body.confirmPassword;
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -36,16 +42,14 @@ exports.postSignup = (req, res, next) => {
         return res.status(422).render('auth/signup', {
             path: '/signup',
             Title: 'Signup',
-            eMessage: errors.array()[0].msg
+            eMessage: errors.array()[0].msg,
+            oldInput: {
+                email: email,
+                password: password,
+                confirmPassword: confirmPassword
+            }
         });
     }
-
-    // User.findOne({ email: email })
-    //     .then(user => {
-    //         if (user) {
-    //             req.flash('error', 'This user already exist...');
-    //             return res.redirect('/signup');
-    //         }
     bcrybtjs
         .hash(password, 12)
         .then(hashedPassword => {
