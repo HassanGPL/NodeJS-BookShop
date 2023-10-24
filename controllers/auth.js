@@ -86,7 +86,12 @@ exports.getLogin = (req, res, next) => {
     res.render('auth/login', {
         Title: "Login",
         path: '/login',
-        eMessage: message
+        eMessage: message,
+        oldInput: {
+            email: '',
+            password: ''
+        },
+        validationErrors: []
     });
 };
 
@@ -97,18 +102,31 @@ exports.postLogin = (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         console.log(errors.array());
-        return res.status(422).render('auth/signup', {
-            path: '/signup',
-            Title: 'Signup',
-            eMessage: errors.array()[0].msg
+        return res.status(422).render('auth/login', {
+            path: '/login',
+            Title: 'Login',
+            eMessage: errors.array()[0].msg,
+            oldInput: {
+                email: email,
+                password: password
+            },
+            validationErrors: errors.array()
         });
     }
 
     User.findOne({ email: email })
         .then((user) => {
             if (!user) {
-                req.flash('error', 'Invalid Email or Passowrd...');
-                return res.redirect('/login');
+                return res.status(422).render('auth/login', {
+                    path: '/login',
+                    Title: 'Login',
+                    eMessage: 'Invalid Email or Passowrd...',
+                    oldInput: {
+                        email: email,
+                        password: password
+                    },
+                    validationErrors: errors.array()
+                });
             }
             bcrybtjs.compare(password, user.password)
                 .then(result => {
@@ -119,8 +137,16 @@ exports.postLogin = (req, res, next) => {
                             res.redirect('/');
                         });
                     }
-                    req.flash('error', 'Invalid Email or Passowrd...');
-                    return res.redirect('/login');
+                    return res.status(422).render('auth/login', {
+                        path: '/login',
+                        Title: 'Login',
+                        eMessage: 'Invalid Email or Passowrd...',
+                        oldInput: {
+                            email: email,
+                            password: password
+                        },
+                        validationErrors: errors.array()
+                    });
                 })
                 .catch(err => {
                     console.log(err);
