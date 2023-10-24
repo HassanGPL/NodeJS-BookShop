@@ -11,6 +11,7 @@ router.post('/signup',
         check('email')
             .isEmail()
             .withMessage('Please enter a valid email...')
+            .normalizeEmail()
             .custom((value, { req }) => {
                 return User.findOne({ email: value })
                     .then(user => {
@@ -22,8 +23,10 @@ router.post('/signup',
         ,
         body('password', 'Please enter a password with only numbers and text and min length 8 characters')
             .isLength({ min: 8 })
-            .isAlphanumeric(),
+            .isAlphanumeric()
+            .trim(),
         body('confirmPassword')
+            .trim()
             .custom((value, { req }) => {
                 if (value !== req.body.password) {
                     throw new Error('Passwords does not match!')
@@ -37,7 +40,18 @@ router.post('/signup',
 router.get('/login', authController.getLogin);
 router.post('/login', authController.postLogin);
 
-router.post('/logout', authController.postLogout);
+router.post('/logout',
+    [
+        check('email')
+            .isEmail()
+            .normalizeEmail()
+            .withMessage('Please enter a valid email...'),
+        body('password', 'Please enter a valid password')
+            .isLength({ min: 8 })
+            .isAlphanumeric()
+            .trim()
+    ],
+    authController.postLogout);
 
 router.get('/reset', authController.getReset);
 router.post('/reset', authController.postReset);
