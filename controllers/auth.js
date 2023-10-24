@@ -27,7 +27,8 @@ exports.getSignup = (req, res, next) => {
             email: '',
             password: '',
             confirmPassword: ''
-        }
+        },
+        validationErrors: []
     });
 };
 
@@ -47,7 +48,8 @@ exports.postSignup = (req, res, next) => {
                 email: email,
                 password: password,
                 confirmPassword: confirmPassword
-            }
+            },
+            validationErrors: errors.array()
         });
     }
     bcrybtjs
@@ -72,10 +74,6 @@ exports.postSignup = (req, res, next) => {
         .catch(err => {
             console.log(err);
         });
-    // });
-    // .catch(err => {
-    //     console.log(err);
-    // });
 };
 
 exports.getLogin = (req, res, next) => {

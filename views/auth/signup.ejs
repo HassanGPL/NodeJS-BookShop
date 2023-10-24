@@ -7,27 +7,46 @@
         <%- include('../includes/nav.ejs') %>
 
             <main>
-                <% if(eMessage) { %>
+                <!-- <% if(eMessage) { %>
                     <div class="user-message user-message--error">
                         <%= eMessage %>
                     </div>
-                    <% } %>
-                        <form class="login-form" action="/signup" method="POST" novalidate>
-                            <div class="form-control">
-                                <label for="email">E-Mail</label>
-                                <input type="email" name="email" id="email" value="<%= oldInput.email %>">
-                            </div>
+                    <% } %> -->
+                <form class="login-form" action="/signup" method="POST" novalidate>
+                    <div class="form-control">
+                        <label for="email">E-Mail</label>
+                        <input class="<%= validationErrors.find(e => e.path === 'email') ? 'invalid' : '' %>"
+                            type="email" name="email" id="email" value="<%= oldInput.email %>">
+                    </div>
+                    <% if(eMessage && validationErrors[0].path==='email' ) { %>
+                        <div class="user-message user-message--error">
+                            <%= eMessage %>
+                        </div>
+                        <% } %>
                             <div class="form-control">
                                 <label for="password">Password</label>
-                                <input type="password" name="password" id="password" value="<%= oldInput.password %>">
+                                <input class="<%= validationErrors.find(e => e.path === 'password') ? 'invalid' : '' %>"
+                                    type="password" name="password" id="password" value="<%= oldInput.password %>">
                             </div>
-                            <div class="form-control">
-                                <label for="confirmPassword">Confirm Password</label>
-                                <input type="password" name="confirmPassword" id="confirmPassword"
-                                    value="<%= oldInput.confirmPassword %>">
-                            </div>
-                            <input type="text" hidden name="_csrf" value="<%= csrfToken %>">
-                            <button class="btn" type="submit">Signup</button>
-                        </form>
+                            <% if(eMessage && validationErrors[0].path==='password' ) { %>
+                                <div class="user-message user-message--error">
+                                    <%= eMessage %>
+                                </div>
+                                <% } %>
+                                    <div class="form-control">
+                                        <label for="confirmPassword">Confirm Password</label>
+                                        <input
+                                            class="<%= validationErrors.find(e => e.path === 'confirmPassword') ? 'invalid' : '' %>"
+                                            type="password" name="confirmPassword" id="confirmPassword"
+                                            value="<%= oldInput.confirmPassword %>">
+                                    </div>
+                                    <% if(eMessage && validationErrors[0].path==='confirmPassword' ) { %>
+                                        <div class="user-message user-message--error">
+                                            <%= eMessage %>
+                                        </div>
+                                        <% } %>
+                                            <input type="text" hidden name="_csrf" value="<%= csrfToken %>">
+                                            <button class="btn" type="submit">Signup</button>
+                </form>
             </main>
             <%- include('../includes/end.ejs') %>
