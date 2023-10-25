@@ -4,12 +4,10 @@ const Schema = mongoose.Schema;
 const productSchema = new Schema({
     title: {
         type: String,
-        trim: true,
         required: true
     },
     description: {
         type: String,
-        trim: true,
         required: true
     },
     price: {
@@ -18,7 +16,6 @@ const productSchema = new Schema({
     },
     imageUrl: {
         type: String,
-        trim: true,
         required: true
     },
     userId: {
