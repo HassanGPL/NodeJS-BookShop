@@ -68,7 +68,7 @@ app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 app.use(authRoutes);
 
-// app.get('/500', pagenotfoundController.error500);
+app.get('/500', pagenotfoundController.error500);
 app.use(pagenotfoundController.getPageNotFound);
 
 mongoose
