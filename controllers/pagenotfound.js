@@ -5,3 +5,11 @@ exports.getPageNotFound = (req, res, next) => {
         isAuthenticated: false
     });
 }
+
+// exports.error500 = (req, res, next) => {
+//     res.status(500).render('500', {
+//         Title: 'Error',
+//         path: '/500',
+//         isAuthenticated: false
+//     });
+// }
