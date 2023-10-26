@@ -10,10 +10,10 @@ router.get('/add-product', authMiddleware, adminController.getAddProduct);
 
 router.post('/add-product',
     [
-        body('title').isString().isLength({ min: 3 }).trim(),
-        body('imageUrl').isURL(),
-        body('price').isFloat().trim(),
-        body('description').isLength({ min: 5, max: 400 }).trim()
+        body('title', 'Please Enter a Valid Title...').isString().isLength({ min: 3 }).trim(),
+        body('imageUrl', 'Please Enter a Valid Image URL...').isURL().trim(),
+        body('price', 'Please Enter a Valid Price...').isFloat().trim(),
+        body('description', 'Please Enter a Valid Description...').isLength({ min: 5, max: 400 }).trim()
     ]
     , authMiddleware, adminController.postAddProduct);
 

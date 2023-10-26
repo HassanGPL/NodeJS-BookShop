@@ -1,6 +1,5 @@
 const { validationResult } = require('express-validator');
 const Product = require('../models/product');
-const { default: mongoose } = require('mongoose');
 
 exports.getAdminProducts = (req, res, next) => {
     // return all products in database
@@ -55,7 +54,6 @@ exports.postAddProduct = (req, res, next) => {
     }
 
     const product = new Product({
-        _id: new mongoose.Types.ObjectId('6538d9d797abdaab853ee06f'),
         title: title,
         imageUrl: imageUrl,
         description: description,
