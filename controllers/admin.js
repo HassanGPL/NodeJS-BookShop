@@ -13,7 +13,9 @@ exports.getAdminProducts = (req, res, next) => {
                 path: '/admin/products'
             });
         }).catch(err => {
-            console.log(err);
+            const error = new Error();
+            error.httpStatusCode = 500;
+            return next(error);
         });
 }
 
@@ -81,7 +83,10 @@ exports.postAddProduct = (req, res, next) => {
             //     eMessage: 'Database operation failed, please try again later...',
             //     validationErrors: []
             // });
-            return res.redirect('/500');
+            const error = new Error();
+            error.httpStatusCode = 500;
+            return next(error);
+            // return res.redirect('/500');
         });
 }
 
@@ -107,7 +112,11 @@ exports.getEditProduct = (req, res, next) => {
                 eMessage: null,
                 validationErrors: []
             });
-        }).catch(err => console.log(err));
+        }).catch(err => {
+            const error = new Error();
+            error.httpStatusCode = 500;
+            return next(error);
+        });
 }
 
 
@@ -153,7 +162,9 @@ exports.postEditProduct = (req, res, next) => {
             });
         })
         .catch(err => {
-            console.log(err);
+            const error = new Error();
+            error.httpStatusCode = 500;
+            return next(error);
         });
 }
 
@@ -169,5 +180,9 @@ exports.postDeleteProduct = (req, res, next) => {
             console.log("DELETED SUCCESSFULLY!")
             res.redirect('/admin/products');
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+            const error = new Error();
+            error.httpStatusCode = 500;
+            return next(error);
+        });
 }
